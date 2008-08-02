@@ -32,18 +32,14 @@ class TestGeneticAlgorithem < Test::Unit::TestCase
   
   def test_optimize
     selector = mock()
-    selector.expects(:select).times(10)
+    chromosome = mock()
+    chromosome.expects(:compute_fitness).times(10)
     genetic = Genetic.new(20, 10, mock(), selector)
+    population = [chromosome]
+    genetic.population = population
+    selector.expects(:select_next_generation).times(10).returns(population)
     genetic.optimize
+    assert_equal(10, genetic.generation)
   end
 
-  def test_compute_fitness
-    genetic = Genetic.new(20, 10, mock(), mock())
-    chromosome1 = mock()
-    chromosome1.expects(:compute_fitness)
-    chromosome2 = mock()
-    chromosome2.expects(:compute_fitness)
-    genetic.population = [chromosome1, chromosome2]
-    genetic.compute_fitness
-  end
 end

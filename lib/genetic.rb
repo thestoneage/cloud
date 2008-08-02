@@ -23,13 +23,10 @@ class Genetic
 
   def optimize
     @max_generations.times do
-      compute_fitness
-      @selector.select
+      @population.each { |chromosome| chromosome.compute_fitness }
+      @population = @selector.select_next_generation(@population)
+      @generation += 1
     end 
-  end
-
-  def compute_fitness
-    @population.each { |chromosome| chromosome.compute_fitness }
   end
 
 end
