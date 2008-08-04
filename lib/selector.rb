@@ -1,3 +1,5 @@
+require 'mutator'
+
 class Selector
   
   attr_reader :elite_size
@@ -20,13 +22,15 @@ end
 
 class RandomSelector < Selector
 
-  def initialize(elite_size = 0, crossover_probability = 0.3, mutation_probability = 0.05)
+  def initialize(elite_size = 0, crossover_probability = 0.3, mutation_probability = 0.05, mutator = SingleMutator.new)
     super(elite_size)
     raise(ArgumentError, "Crossover Probabilities must be between 0 and 1") unless 
       (0 <= crossover_probability and crossover_probability <= 1) and
       (0 <= mutation_probability and mutation_probability <= 1)
+    raise(ArgumentError, "Mutator Type required!") unless (mutator.respond_to? :mutate)
     @crossover_probability = crossover_probability
     @mutation_probability = mutation_probability
+    @mutator = mutator
   end
 
   def select_next_generation(population)
@@ -38,7 +42,7 @@ class RandomSelector < Selector
         candidate = candidate.crossover(population[rand(population.size)])
       end
       if (rand <= @mutation_probability)
-        candidate = candidate.mutate
+        candidate = @mutator.mutate(candidate)
       end
       next_gen << candidate 
     end

@@ -4,20 +4,16 @@ require "chromosome"
 
 class TestListChromosome < Test::Unit::TestCase
 
+  def setup
+    @empty_chromosome = ListChromosome.new
+  end
+
   def test_initialize
-    chromosome = ListChromosome.new
-    assert_equal([], chromosome.genes)
+    assert_equal([], @empty_chromosome.genes)
     chromosome = ListChromosome.new(Array.new(5))
     assert_equal(Array.new(5), chromosome.genes)
   end
   
-  def test_random_init
-    
-  end
-
-  def test_fitness
-    
-  end
 
   def test_crossover
     c = ListChromosome.new(Array.new(4))
@@ -41,8 +37,8 @@ class TestListChromosome < Test::Unit::TestCase
       gene == d.genes[index]), "Gene at index #{index} isn't inherited.") }
   end
 
-  def test_mutate
-    return self
+  def test_mutate_gene
+    assert_raise(NotImplementedError) { @empty_chromosome.mutate_gene(nil) }
   end
 
 end

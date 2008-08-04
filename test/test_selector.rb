@@ -40,9 +40,12 @@ class TestRandomSelector < Test::Unit::TestCase
     assert_raise(ArgumentError) { RandomSelector.new(0, 0.0, 2) }
     assert_raise(ArgumentError) { RandomSelector.new(0, -0.1, 0.0) }
     assert_raise(ArgumentError) { RandomSelector.new(0, 0.0, -0.1) }
+    assert_raise(ArgumentError) { RandomSelector.new(0, 0, 0, "") }
     assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0.5, 0.5) }
     assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 1, 1) }
     assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0, 0) }
+    assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0, 0, ProbabilityMutator.new(0))  }
+    
   end
   
   def test_select_next_generation

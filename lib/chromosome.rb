@@ -4,6 +4,7 @@ class ListChromosome
 
   def initialize(genes=[])
     @genes = genes
+    @mutator = mutator
   end
 
   def crossover(partner)
@@ -18,4 +19,17 @@ class ListChromosome
     end
     return ListChromosome.new(child_genes)
   end
+  
+  def size
+    return @genes.size
+  end
+
+  def mutate
+    @mutator.mutate(self)
+  end
+
+  def mutate_gene(index)
+    raise (NotImplementedError)
+  end
+
 end
