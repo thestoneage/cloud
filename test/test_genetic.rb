@@ -43,3 +43,4 @@ class TestGeneticAlgorithem < Test::Unit::TestCase
   end
 
 end
+
