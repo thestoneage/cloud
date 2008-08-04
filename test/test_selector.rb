@@ -4,64 +4,90 @@ require "selector"
 
 class TestSelector < Test::Unit::TestCase
 
-  def setup
-    @selector = Selector.new
+  def test_initialize
+    assert_raise(ArgumentError) { Selector.new(mock()) }
+    assert_nothing_raised(ArgumentError) { Selector.new({}) }
+    assert_raise(ArgumentError) { Selector.new({:elite_size => -1}) }
+    assert_raise(ArgumentError) { Selector.new({:elite_size => 2.0}) }
+    assert_raise(ArgumentError) { Selector.new({:elite_size => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:elite_size => 0})}
+    assert_nothing_raised(ArgumentError) { Selector.new({:elite_size => 1})}
+    assert_raise(ArgumentError) { Selector.new({:mutator => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutator => SingleMutator.new})}
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => 1.1}) }
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => -0.1}) }
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 0 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 1 })}
+
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => 1.1}) }
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => -0.1}) }
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 0 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 1 })}
   end
 
-  def test_initialize
-    assert_raise(ArgumentError) { Selector.new(1.0) }
-    assert_raise(ArgumentError) { Selector.new(-1) }
-    assert_nothing_raised(ArgumentError) { Selector.new(0)}
-  end
-  
   def test_select_next_generation
-    selector = Selector.new(10)
+    selector = Selector.new({:elite_size => 10})
     assert_raise(ArgumentError) { selector.select_next_generation(Array.new(5)) }
     assert_nothing_raised(ArgumentError) { selector.select_next_generation(Array.new(10))}
-
     population = Array.new(5)
-    selector = Selector.new(3)
+    es = 3
+    selector = Selector.new({:elite_size => es})
     next_gen = selector.select_next_generation(population)
     assert(next_gen.class == Array, "Return Type should be Array")
-    assert(selector.elite_size == next_gen.size, "Length of the Array should be Number of Elitist to keep")
-    assert(next_gen == Array.new(selector.elite_size), "Should return the Elite")
+    assert(es == next_gen.size, "Length of the Array should be Number of Elitist to keep")
+    assert(next_gen == Array.new(es), "Should return the Elite")
   end
-  
 end
 
 class TestRandomSelector < Test::Unit::TestCase
 
-  def setup
-    @selector = RandomSelector.new(0, 1.0)
+  def test_initialize
+    assert_raise(ArgumentError) { Selector.new(mock()) }
+
+    assert_nothing_raised(ArgumentError) { Selector.new({}) }
+
+    assert_raise(ArgumentError) { Selector.new({:elite_size => -1}) }
+    assert_raise(ArgumentError) { Selector.new({:elite_size => 2.0}) }
+    assert_raise(ArgumentError) { Selector.new({:elite_size => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:elite_size => 0})}
+    assert_nothing_raised(ArgumentError) { Selector.new({:elite_size => 1})}
+
+    assert_raise(ArgumentError) { Selector.new({:mutator => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutator => SingleMutator.new})}
+
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => 1.1}) }
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => -0.1}) }
+    assert_raise(ArgumentError) { Selector.new({:crossover_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 0 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:crossover_probability => 1 })}
+
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => 1.1}) }
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => -0.1}) }
+    assert_raise(ArgumentError) { Selector.new({:mutation_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 0 })}
+    assert_nothing_raised(ArgumentError) { Selector.new({:mutation_probability => 1 })}
   end
 
-  def test_initialize
-    assert_raise(ArgumentError) { RandomSelector.new(0, 2, 0.0) }
-    assert_raise(ArgumentError) { RandomSelector.new(0, 0.0, 2) }
-    assert_raise(ArgumentError) { RandomSelector.new(0, -0.1, 0.0) }
-    assert_raise(ArgumentError) { RandomSelector.new(0, 0.0, -0.1) }
-    assert_raise(ArgumentError) { RandomSelector.new(0, 0, 0, "") }
-    assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0.5, 0.5) }
-    assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 1, 1) }
-    assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0, 0) }
-    assert_nothing_raised(ArgumentError) { RandomSelector.new(0, 0, 0, ProbabilityMutator.new(0))  }
-    
-  end
-  
   def test_select_next_generation
     population = Array.new(5)
-    selector = RandomSelector.new(5, 0.5, 0.0)
+    selector = RandomSelector.new({:elite_size => 5})
     next_gen = selector.select_next_generation(population)
     assert(next_gen.class == Array, "Return Type should be Array")
     assert(next_gen == population, "If Elite has size of population, the next generation is the same as the population.")
 
-    selector = RandomSelector.new(0, 0.0, 0.0)
+    selector = RandomSelector.new()
     next_gen = selector.select_next_generation(population)
     assert(next_gen.class == Array, "Return Type should be Array")
     assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
     assert(population == next_gen, "With a Crossover Probability of 0.0 the next Generation is the same as the Population")
 
-    selector = RandomSelector.new(0, 1.0, 0.0)
+    selector = RandomSelector.new({:crossover_probability => 1})
     ca = mock()
     ca.expects(:crossover).times(3).with(ca).returns(:ca)
     population = [ca, ca, ca]
@@ -70,7 +96,7 @@ class TestRandomSelector < Test::Unit::TestCase
     assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
     assert(next_gen == [:ca, :ca, :ca], "With Crossover Probability of 1.0 the next Generation will be only the stubs")
 
-    selector = RandomSelector.new(0, 0.0, 1.0)
+    selector = RandomSelector.new({:mutation_probability => 1})
     cb = mock()
     cb.expects(:mutate).times(3).returns(:cb)
     population = [cb, cb, cb]
@@ -82,8 +108,41 @@ class TestRandomSelector < Test::Unit::TestCase
 
 end
 
-class TestTurncationSelector < Test::Unit::TestCase
+class TestTruncationSelector < Test::Unit::TestCase
+
   def test_initialize
-    assert_raise(ArgumentError) { TruncationSelector.new(0, 2) }
+    assert_raise(ArgumentError) { TruncationSelector.new(mock()) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:elite_size => -1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:elite_size => 2.0}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:elite_size => mock()}) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:elite_size => 0})}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:elite_size => 1})}
+    assert_raise(ArgumentError) { TruncationSelector.new({:mutator => mock()}) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:mutator => SingleMutator.new})}
+    assert_raise(ArgumentError) { TruncationSelector.new({:crossover_probability => 1.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:crossover_probability => -0.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:crossover_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:crossover_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:crossover_probability => 0 })}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:crossover_probability => 1 })}
+
+    assert_raise(ArgumentError) { TruncationSelector.new({:mutation_probability => 1.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:mutation_probability => -0.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:mutation_probability => mock()}) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:mutation_probability => 0.1 })}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:mutation_probability => 1 })}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new({:mutation_probability => 0 })}
+
+    assert_raise(ArgumentError) { TruncationSelector.new({:truncation_percentage => 1.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:truncation_percentage => -0.1}) }
+    assert_raise(ArgumentError) { TruncationSelector.new({:truncation_percentage => mock()}) }
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new(:truncation_percentage => 0)}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new(:truncation_percentage => 1)}
+    assert_nothing_raised(ArgumentError) { TruncationSelector.new(:truncation_percentage => 0.1)}
   end
+
+  def test_select_next_generation
+  end
+
 end

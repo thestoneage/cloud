@@ -1,35 +1,50 @@
 require 'mutator'
 
 class Selector
-  
-  attr_reader :elite_size
-  
-  def initialize(elite_size = 0)
-    raise(ArgumentError, "elite_size must be an non negative Integer") unless (elite_size.class == Fixnum and elite_size >= 0)
-    @elite_size = elite_size
+
+  def initialize(args = {})
+    raise(ArgumentError) unless args.class == Hash
+    if args[:elite_size]
+      @elite_size = args[:elite_size]
+      raise(ArgumentError, ":elite_size must be an non negative Integer") unless (@elite_size.class == Fixnum and @elite_size >= 0)
+    else
+      @elite_size = 0
+    end
+    if args[:mutator]
+      @mutator = args[:mutator]
+      raise(ArgumentError, "Mutator Type required!") unless (@mutator.respond_to? :mutate)
+    else
+      @mutator = SingleMutator.new
+    end
+    if args[:crossover_probability]
+      @crossover_probability = args[:crossover_probability]
+      raise(ArgumentError, "Crossover Probabilities must be between 0 and 1") unless
+        (0 <= @crossover_probability and @crossover_probability <= 1)
+    else
+      @crossover_probability = 0
+    end
+    if args[:mutation_probability]
+      @mutation_probability = args[:mutation_probability]
+      raise(ArgumentError, "Mutation Probabilities must be between 0 and 1") unless
+        (0 <= @mutation_probability and @mutation_probability <= 1)
+    else
+      @mutation_probability = 0
+    end
   end
-  
   def select_next_generation(population)
     if @elite_size > population.size
       raise ArgumentError, "Size of Elite (#{@elite_size}) > Size of Population (#{population.size})"
     end
     next_gen = []
-    elite_size.times { |index| next_gen << population[index] }
+    @elite_size.times { |index| next_gen << population[index] }
     return next_gen
   end
 end
 
 class RandomSelector < Selector
 
-  def initialize(elite_size = 0, crossover_probability = 0.3, mutation_probability = 0.05, mutator = SingleMutator.new)
-    super(elite_size)
-    raise(ArgumentError, "Mutator Type required!") unless (mutator.respond_to? :mutate)
-    raise(ArgumentError, "Crossover Probabilities must be between 0 and 1") unless 
-      (0 <= crossover_probability and crossover_probability <= 1) and
-      (0 <= mutation_probability and mutation_probability <= 1)
-    @crossover_probability = crossover_probability
-    @mutation_probability = mutation_probability
-    @mutator = mutator
+  def initialize(args = {})
+    super(args)
   end
 
   def select_next_generation(population)
@@ -51,9 +66,15 @@ end
 
 class TruncationSelector < Selector
 
-  def initialize(elite_size, turncation_percentage)
-    super(elite_size)
-    raise (ArgumentError) unless (0 <= turncation_percentage and turncation_percentage <= 1)
+  def initialize(args = {})
+    super(args)
+    if args[:truncation_percentage]
+      @truncation_percentage = args[:truncation_percentage]
+      raise(ArgumentError, "Truncation Percentage must be between 0 and 1") unless
+        (0 <= @truncation_percentage and @truncation_percentage <= 1)
+    else
+      @truncation_percentage = 0
+    end
   end
 
 end
