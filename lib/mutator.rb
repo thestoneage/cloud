@@ -23,7 +23,7 @@ class ProbabilityMutator
 
   def mutate(chromosome)
     chromosome.size.times do |index|
-      chromosome.mutate(index) if (rand() <= @probability)
+      chromosome.mutate_gene_at(index) if (rand() <= @probability)
     end
   end
 

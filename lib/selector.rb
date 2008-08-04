@@ -17,17 +17,16 @@ class Selector
     elite_size.times { |index| next_gen << population[index] }
     return next_gen
   end
-
 end
 
 class RandomSelector < Selector
 
   def initialize(elite_size = 0, crossover_probability = 0.3, mutation_probability = 0.05, mutator = SingleMutator.new)
     super(elite_size)
+    raise(ArgumentError, "Mutator Type required!") unless (mutator.respond_to? :mutate)
     raise(ArgumentError, "Crossover Probabilities must be between 0 and 1") unless 
       (0 <= crossover_probability and crossover_probability <= 1) and
       (0 <= mutation_probability and mutation_probability <= 1)
-    raise(ArgumentError, "Mutator Type required!") unless (mutator.respond_to? :mutate)
     @crossover_probability = crossover_probability
     @mutation_probability = mutation_probability
     @mutator = mutator
@@ -42,10 +41,19 @@ class RandomSelector < Selector
         candidate = candidate.crossover(population[rand(population.size)])
       end
       if (rand <= @mutation_probability)
-        candidate = @mutator.mutate(candidate)
+        candidate = candidate.mutate(@mutator)
       end
       next_gen << candidate 
     end
     return next_gen
   end
+end
+
+class TruncationSelector < Selector
+
+  def initialize(elite_size, turncation_percentage)
+    super(elite_size)
+    raise (ArgumentError) unless (0 <= turncation_percentage and turncation_percentage <= 1)
+  end
+
 end

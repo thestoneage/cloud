@@ -13,7 +13,6 @@ class TestListChromosome < Test::Unit::TestCase
     chromosome = ListChromosome.new(Array.new(5))
     assert_equal(Array.new(5), chromosome.genes)
   end
-  
 
   def test_crossover
     c = ListChromosome.new(Array.new(4))
@@ -37,8 +36,18 @@ class TestListChromosome < Test::Unit::TestCase
       gene == d.genes[index]), "Gene at index #{index} isn't inherited.") }
   end
 
-  def test_mutate_gene
-    assert_raise(NotImplementedError) { @empty_chromosome.mutate_gene(nil) }
+  def test_mutate_gene_at
+    assert_raise(NotImplementedError) { @empty_chromosome.mutate_gene_at(nil) }
+  end
+
+  def test_size
+    assert_equal(0, @empty_chromosome.size, "Size of an empty Chromosome should be 0")
+  end
+
+  def test_mutate
+    mutator = mock()
+    mutator.expects(:mutate).with(@empty_chromosome)
+    @empty_chromosome.mutate(mutator)
   end
 
 end

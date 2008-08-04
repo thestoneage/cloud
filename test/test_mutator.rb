@@ -25,7 +25,7 @@ class TestProbabilityMutator < Test::Unit::TestCase
   def test_mutate
     chromosome = mock()
     chromosome.expects(:size).returns(10)
-    chromosome.expects(:mutate).times(10)
+    chromosome.expects(:mutate_gene_at).times(10)
     mutator = ProbabilityMutator.new(1)
     mutator.mutate(chromosome)
 

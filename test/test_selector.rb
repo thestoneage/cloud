@@ -69,7 +69,7 @@ class TestRandomSelector < Test::Unit::TestCase
     assert(next_gen.class == Array, "Return Type should be Array")
     assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
     assert(next_gen == [:ca, :ca, :ca], "With Crossover Probability of 1.0 the next Generation will be only the stubs")
-    
+
     selector = RandomSelector.new(0, 0.0, 1.0)
     cb = mock()
     cb.expects(:mutate).times(3).returns(:cb)
@@ -80,4 +80,10 @@ class TestRandomSelector < Test::Unit::TestCase
     assert(next_gen == [:cb, :cb, :cb], "With Mutation Probability of 1.0 the next Generation will be only the stubs")
   end
 
+end
+
+class TestTurncationSelector < Test::Unit::TestCase
+  def test_initialize
+    assert_raise(ArgumentError) { TruncationSelector.new(0, 2) }
+  end
 end
