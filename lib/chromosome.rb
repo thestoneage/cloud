@@ -28,7 +28,15 @@ class ListChromosome
   end
 
   def mutate_gene_at(index)
-    raise (NotImplementedError)
+    raise(NotImplementedError)
+  end
+  
+  def random_init
+    raise(NotImplementedError)
+  end
+  
+  def compute_fitness
+    raise(NotImplementedError)
   end
 
 end
