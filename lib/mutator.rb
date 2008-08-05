@@ -8,7 +8,7 @@ end
 class SingleMutator
   
   def mutate(chromosome)
-    chromosome.mutate(rand(chromosome.size))
+    chromosome.mutate_gene_at(rand(chromosome.size))
   end
   
 end

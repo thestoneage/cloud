@@ -7,7 +7,7 @@ class TestSingleMutator < Test::Unit::TestCase
     mutator = SingleMutator.new
     chromosome = mock()
     chromosome.expects(:size).returns(10)
-    chromosome.expects(:mutate)
+    chromosome.expects(:mutate_gene_at)
     mutator.mutate(chromosome)
   end
 end
