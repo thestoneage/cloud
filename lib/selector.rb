@@ -31,6 +31,7 @@ class Selector
       @mutation_probability = 0
     end
   end
+
   def select_next_generation(population)
     if @elite_size > population.size
       raise ArgumentError, "Size of Elite (#{@elite_size}) > Size of Population (#{population.size})"
@@ -38,6 +39,16 @@ class Selector
     next_gen = []
     @elite_size.times { |index| next_gen << population[index] }
     return next_gen
+  end
+
+  def genetic_operators(candidate, partners)
+    if (rand <= @crossover_probability)
+      candidate = candidate.crossover(partners[rand(partners.size)])
+    end
+    if (rand <= @mutation_probability)
+      candidate = candidate.mutate(@mutator)
+    end
+    return candidate
   end
 end
 
@@ -49,19 +60,13 @@ class RandomSelector < Selector
 
   def select_next_generation(population)
     next_gen = super(population)
-    puts @mutation_probability
     while next_gen.size < population.size
       candidate = population[rand(population.size)]
-      if (rand <= @crossover_probability)
-        candidate = candidate.crossover(population[rand(population.size)])
-      end
-      if (rand <= @mutation_probability)
-        candidate = candidate.mutate(@mutator)
-      end
-      next_gen << candidate 
+      next_gen << self.genetic_operators(candidate, population)
     end
     return next_gen
   end
+
 end
 
 class TruncationSelector < Selector
@@ -75,6 +80,17 @@ class TruncationSelector < Selector
     else
       @truncation_percentage = 0
     end
+  end
+
+  def select_next_generation(population)
+    next_gen = super(population)
+    truncation_index = [1, (@truncation_percentage * population.size).round].max
+    candidates = population[0, truncation_index]
+    while next_gen.size < population.size
+      candidate = candidates[rand(candidates.size)]
+      next_gen << self.genetic_operators(candidate, candidates)
+    end
+    return next_gen
   end
 
 end

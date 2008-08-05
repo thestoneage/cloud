@@ -34,6 +34,7 @@ class TestGeneticAlgorithem < Test::Unit::TestCase
     selector = mock()
     chromosome = mock()
     chromosome.expects(:compute_fitness).times(10)
+    chromosome.expects(:fitness).times(10)
     genetic = Genetic.new(20, 10, mock(), selector)
     population = [chromosome]
     genetic.population = population

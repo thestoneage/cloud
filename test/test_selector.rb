@@ -41,6 +41,13 @@ class TestSelector < Test::Unit::TestCase
     assert(es == next_gen.size, "Length of the Array should be Number of Elitist to keep")
     assert(next_gen == Array.new(es), "Should return the Elite")
   end
+
+  def test_genetic_operators
+    selector = Selector.new
+    candidate = mock()
+    population = mock()
+    assert_equal(candidate, selector.genetic_operators(candidate, population))
+  end
 end
 
 class TestRandomSelector < Test::Unit::TestCase
@@ -143,6 +150,22 @@ class TestTruncationSelector < Test::Unit::TestCase
   end
 
   def test_select_next_generation
+    population = []
+    5.times { population << mock() }
+    selector = TruncationSelector.new( {:truncation_percentage => 1} )
+    next_gen = selector.select_next_generation(population)
+    assert(next_gen.class == Array, "Return Type should be an Array")
+    assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
+    next_gen.each { |element| assert(population.include?(element), "Element must be in population") }
+
+    selector = TruncationSelector.new( {:truncation_percentage => 0} )
+    next_gen = selector.select_next_generation(population)
+    next_gen.each { |element| assert(element == population.first, "Each element must be the first")}
+
+    selector = TruncationSelector.new( {:truncation_percentage => 0.5} )
+    next_gen = selector.select_next_generation(population)
+    next_gen.each { |element| assert(population[0, 5].include?(element), "Element must be in first 5 of the Population")}
+
   end
 
 end
