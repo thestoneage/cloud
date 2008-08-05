@@ -15,7 +15,7 @@ class TestGeneticAlgorithem < Test::Unit::TestCase
     assert_equal(generations, genetic.max_generations)
     assert_equal(0, genetic.generation)
     assert_equal(selector, genetic.selector)
-    assert_equal(genome_type, genetic.genome_type)
+    assert_equal(genome_type, genetic.chromosome_type)
   end
 
   def test_case_init_population
