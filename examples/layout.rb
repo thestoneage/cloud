@@ -40,9 +40,9 @@ class LayoutChromosome < ListChromosome
       return @fitness
     else
       @fitness = 0
-      @genes.each do |gene|
-        @genes.each do |other|
-          @fitness += 1 if (gene != other and gene.intersects(other))
+      @genes.each_index do |i|
+        @genes[i, @genes.size].each_index do |j|
+          @fitness += 1 if (@genes[i] != @genes[j] and @genes[i].intersects(@genes[j]))
         end
       end
       return @fitness
