@@ -17,30 +17,36 @@ class LayoutChromosome < ListChromosome
       @@domain = []
       75.times { @@domain << [rand(10)+15, 10] }
     end
-    #@image = BufferedImage.new(800, 600, BufferedImage::TYPE_INT_RGB)
-    #@graphics = @image.createGraphics
+  end
+  
+  def LayoutChromosome.domain
+    return @@domain
   end
 
   def random_init
-    @@domain.each do |element|
-      @genes << Rectangle2D::Double.new(rand(400-element.first), rand(300-element.last), element.first, element.last)
+    @@domain.each_index do |index|
+      @genes << self.init_gene_at(index)
     end
     return @genes
   end
-
-  def mutate_gene_at index
-    element = @@domain[index]
-    @genes[index] = Rectangle2D::Double.new(rand(800 - element.first), rand(600 - element.last), element.first, element.last)
-  end
   
+  def init_gene_at(index)
+    element = @@domain[index]
+    return Rectangle2D::Double.new(rand(320-element.first), rand(200-element.last), element.first, element.last)
+  end
+
   def compute_fitness
-    @fitness = 0
-    @genes.each do |gene|
-      @genes.each do |other|
-        @fitness += 1 if (gene != other and gene.intersects(other))
+    if @fitness
+      return @fitness
+    else
+      @fitness = 0
+      @genes.each do |gene|
+        @genes.each do |other|
+          @fitness += 1 if (gene != other and gene.intersects(other))
+        end
       end
+      return @fitness
     end
-    return @fitness
   end
 
 end

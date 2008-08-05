@@ -8,7 +8,7 @@ class ListChromosome
 
   def crossover(partner)
     raise(ArgumentError, "Size of Genes differs") unless (@genes.size == partner.genes.size)
-    child_genes = Array.new(genes.size)
+    child_genes = Array.new(@genes.size)
     child_genes.each_index do |index|
       if (rand(2) == 0)
         child_genes[index] = @genes[index]
@@ -24,20 +24,18 @@ class ListChromosome
   end
 
   def mutate(mutator)
-    mutator.mutate(self)
-    return self
+    new_genes = @genes.clone
+    indices = mutator.mutate(self)
+    indices.each { |index| new_genes[index] = init_gene_at(index) }
+    return self.class.new(new_genes)
   end
 
-  def mutate_gene_at(index)
-    raise(NotImplementedError)
-  end
-  
   def random_init
     raise(NotImplementedError)
   end
-  
+
   def compute_fitness
-    return @fitness
+    raise(NotImplementedError)
   end
 
 end

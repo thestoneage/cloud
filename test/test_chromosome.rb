@@ -31,7 +31,6 @@ class TestListChromosome < Test::Unit::TestCase
     c = ListChromosome.new(g)
     d = ListChromosome.new(h)
     child = c.crossover(d)
-    puts child.genes.size
     child.genes.each_with_index { |gene, index| assert((gene == c.genes[index] or
       gene == d.genes[index]), "Gene at index #{index} isn't inherited.") }
   end
@@ -46,7 +45,7 @@ class TestListChromosome < Test::Unit::TestCase
 
   def test_mutate
     mutator = mock()
-    mutator.expects(:mutate).with(@empty_chromosome)
+    mutator.expects(:mutate).with(@empty_chromosome).returns(Array.new)
     @empty_chromosome.mutate(mutator)
   end
 
