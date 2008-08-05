@@ -24,7 +24,13 @@ class Genetic
   def optimize
     @max_generations.times do
       @population.each { |chromosome| chromosome.compute_fitness }
-      @population.sort_by { |chromosome| chromosome.fitness }
+      @population = @population.sort_by { |chromosome| chromosome.fitness }
+      puts "#{@generation}. Generation:"
+      string = ""
+      @population.each do |chromosome|
+        string << "#{chromosome.fitness}; "
+      end
+      puts string
       @population = @selector.select_next_generation(@population)
       @generation += 1
     end 

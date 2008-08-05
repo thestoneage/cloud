@@ -16,7 +16,7 @@ class ListChromosome
         child_genes[index] = partner.genes[index]
       end
     end
-    return ListChromosome.new(child_genes)
+    return self.class.new(child_genes)
   end
 
   def size
@@ -25,6 +25,7 @@ class ListChromosome
 
   def mutate(mutator)
     mutator.mutate(self)
+    return self
   end
 
   def mutate_gene_at(index)
@@ -36,7 +37,7 @@ class ListChromosome
   end
   
   def compute_fitness
-    raise(NotImplementedError)
+    return @fitness
   end
 
 end
