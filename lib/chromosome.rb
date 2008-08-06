@@ -34,6 +34,10 @@ class ListChromosome
     raise(NotImplementedError)
   end
 
+  def init_gene_at(index)
+    raise(NotImplementedError)
+  end
+
   def compute_fitness
     raise(NotImplementedError)
   end
