@@ -24,7 +24,8 @@ class ProbabilityMutator
 
   def mutate(chromosome)
     indices = []
-    chromosome.size.times do |index|
+    size = chromosome.size
+    size.times do |index|
       indices << index if (rand <= @probability)
     end
     return indices
