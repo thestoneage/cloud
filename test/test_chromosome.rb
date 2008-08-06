@@ -35,18 +35,23 @@ class TestListChromosome < Test::Unit::TestCase
       gene == d.genes[index]), "Gene at index #{index} isn't inherited.") }
   end
 
-  def test_mutate_gene_at
-    assert_raise(NotImplementedError) { @empty_chromosome.mutate_gene_at(nil) }
-  end
-
   def test_size
-    assert_equal(0, @empty_chromosome.size, "Size of an empty Chromosome should be 0")
+    assert(@empty_chromosome.size == 0, "Empty Chromosome must have a size of 0.")
+    c = ListChromosome(Array.new(5))
+    assert(c.size = 5, "Size of Chromosome must be 5.")
   end
 
   def test_mutate
-    mutator = mock()
-    mutator.expects(:mutate).with(@empty_chromosome).returns(Array.new)
-    @empty_chromosome.mutate(mutator)
+    chromos1 = ListChromosome.new
+    mutator = mock
+    mutator.expects(:mutate).with(chromos1).returns([])
+    chromos2 = chromos1.mutate(mutator)
+    assert(chromos2.class == chromos1.class, "The mutated Chromosome must have the sam class as the original one.")
+    assert_equal(chromos1.genes, chromos2.genes, "Since we mock the mutator both Chromosomes must be equal.")
+  end
+
+  def test_size
+    assert_equal(0, @empty_chromosome.size, "Size of an empty Chromosome should be 0.")
   end
 
 end
