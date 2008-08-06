@@ -1,0 +1,5 @@
+Cloud is a genetic algorithm framework written entirely in ruby.
+
+examples/
+lib/
+test/

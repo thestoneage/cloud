@@ -1,9 +1,13 @@
 class ListChromosome
 
-  attr_reader :genes
+  attr_reader :genes, :fitness
 
   def initialize(genes=[])
     @genes = genes
+  end
+
+  def <=> other
+    return self.fitness<=>other.fitness
   end
 
   def crossover(partner)

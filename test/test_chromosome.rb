@@ -14,6 +14,18 @@ class TestListChromosome < Test::Unit::TestCase
     assert_equal(Array.new(5), chromosome.genes)
   end
 
+  def test_vgl
+    a = ListChromosome.new()
+    a.instance_variable_set(:@fitness, 1)
+    b = ListChromosome.new()
+    b.instance_variable_set(:@fitness, 1)
+    assert_equal(0, a <=> b)
+    a.instance_variable_set(:@fitness, 2)
+    assert_equal(1, a <=> b)
+    a.instance_variable_set(:@fitness, 0)
+    assert_equal(-1, a <=> b)
+  end
+
   def test_crossover
     c = ListChromosome.new(Array.new(4))
     d = ListChromosome.new(Array.new(3))
