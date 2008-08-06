@@ -16,22 +16,21 @@ class Genetic
     @population_size.times do
       chromosome = chromosome_type.new
       chromosome.random_init
+      chromosome.compute_fitness
       @population << chromosome
     end
+    @population = @population.sort_by { |chromosome| chromosome.fitness }
     return @population
   end
 
   def optimize
     @max_generations.times do
+      @generation += 1
+      yield(@generation, @population) if block_given?
+      @population = @selector.select_next_generation(@population)
       @population.each { |chromosome| chromosome.compute_fitness }
       @population = @population.sort_by { |chromosome| chromosome.fitness }
-      yield(@generation, @population)
-      @population = @selector.select_next_generation(@population)
-      @generation += 1
-#      break if @population.first.fitness == 0
     end 
-    @population.each { |chromosome| chromosome.compute_fitness }
-    @population = @population.sort_by { |chromosome| chromosome.fitness }
     return @population
   end
 
