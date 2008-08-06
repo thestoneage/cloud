@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'cloud_test_helper')
 
 require "genetic"
 
-class TestGeneticAlgorithem < Test::Unit::TestCase
+class TestGenetic < Test::Unit::TestCase
 
   def test_initialization
     population_size = 20
@@ -19,25 +19,24 @@ class TestGeneticAlgorithem < Test::Unit::TestCase
   end
 
   def test_case_init_population
-    genome = mock()
-    genome.expects(:random_init).times(10)
-    genome.stubs(:compute_fitness)
-    genome.stubs(:fitness).returns(0)
-    genome_type = mock()
-    genome_type.expects(:new).times(10).returns(genome)
-    genetic = Genetic.new(10, 10, genome_type, mock())
+    chromosome = mock()
+    chromosome.expects(:random_init).times(10)
+    chromosome.expects(:compute_fitness).times(10)
+    chromosome.stubs(:<=>).returns(0)
+    chromosome_type = mock()
+    chromosome_type.expects(:new).times(10).returns(chromosome)
+    genetic = Genetic.new(10, 10, chromosome_type, mock())
 
     genetic.init_population
     assert_equal(10, genetic.population.size)
-    assert_equal(genome, genetic.population.first)
-    assert_equal(genome, genetic.population.last)
+    assert_equal(chromosome, genetic.population.first)
+    assert_equal(chromosome, genetic.population.last)
   end
   
   def test_optimize
     selector = mock()
     chromosome = mock()
     chromosome.expects(:compute_fitness).times(10)
-    chromosome.expects(:fitness).times(10)
     genetic = Genetic.new(20, 10, mock(), selector)
     population = [chromosome]
     genetic.population = population

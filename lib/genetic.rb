@@ -19,7 +19,7 @@ class Genetic
       chromosome.compute_fitness
       @population << chromosome
     end
-    @population = @population.sort_by { |chromosome| chromosome.fitness }
+    @population.sort!
     return @population
   end
 
@@ -29,7 +29,7 @@ class Genetic
       yield(@generation, @population) if block_given?
       @population = @selector.select_next_generation(@population)
       @population.each { |chromosome| chromosome.compute_fitness }
-      @population = @population.sort_by { |chromosome| chromosome.fitness }
+      @population.sort!
     end 
     return @population
   end
