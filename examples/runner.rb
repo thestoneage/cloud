@@ -15,8 +15,9 @@ module JavaIO
 end
 
 #s = RandomSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probility => 0.1 })
-s = TruncationSelector.new({ :elite_size => 3, :crossover_probability => 0.95, :mutation_probability => 0.6, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.1) })
-g = Genetic.new(25, 1000, EigenLayoutChromosome, s)
+s = TruncationSelector.new({ :elite_size => 3, :crossover_probability => 0.95, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
+#s = TruncationSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :mutator => ProbabilityMutator.new(0.2) })
+g = Genetic.new(15, 250, EigenLayoutChromosome, s)
 g.init_population
 p = g.optimize do |gen, pop| 
   str = "(#{gen}) "
