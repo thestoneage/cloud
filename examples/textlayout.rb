@@ -40,7 +40,7 @@ class TextLayout < ListChromosome
 
   def init_gene_at(index)
     dom = @@domain[index]
-    if (@fitness and @fitness < 70000)
+    if (@fitness and @fitness < @@domain.size * @@width / 2)
       gene = @genes[index]
       x = gene.x + (rand(10)-5)
       y = gene.y + (rand(10)-5)
@@ -66,8 +66,8 @@ class TextLayout < ListChromosome
   def compute_fitness
     @fitness = 0
     @genes.each do |one|
-      delta_x = ((one.x + one.w/2) - @@width/2).abs ** 2
-      delta_y = ((one.y + one.h/2) - @@height/2).abs ** 2
+      delta_x = ((one.x + one.w/2) - @@width/2).abs * 2
+      delta_y = ((one.y + one.h/2) - @@height/2).abs * 2
       @fitness +=  (delta_x + delta_y)
       @genes.each do |other|
         @fitness += (@@domain.size * @@width) if (one != other and one.include_rectangle?(other))

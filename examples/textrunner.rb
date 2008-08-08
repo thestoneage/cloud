@@ -1,10 +1,14 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift File.dirname(__FILE__)
+
 require 'genetic'
 require 'mutator'
 require 'selector'
 require 'textlayout'
 require 'pp'
 require 'java'
+
+
 
 include_class 'java.awt.image.BufferedImage'
 include_class 'java.awt.geom.Rectangle2D'
@@ -33,8 +37,8 @@ frame.add(panel)
 frame.pack
 frame.setVisible(true)
 #s = TruncationSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
-s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.75, :mutation_probability => 0.4, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.3) })
-g = Genetic.new(15, 2500, TextLayout, s)
+s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probability => 0.8, :mutator => SingleMutator.new })
+g = Genetic.new(10, 1500, TextLayout, s)
 g.init_population
 g.optimize do |gen, pop| 
   str = "(#{gen}) "
