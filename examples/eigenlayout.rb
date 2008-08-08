@@ -33,7 +33,6 @@ class EigenLayoutChromosome < ListChromosome
     return Rectangle.new(rand(@@width-e.first), rand(@@height-e.last), e.first, e.last)
   end
 
-
   def compute_fitness
     @fitness = 0
     @genes.each do |one|
@@ -50,25 +49,25 @@ class EigenLayoutChromosome < ListChromosome
 end
 
 class Rectangle
-  
+
   attr_reader :x, :y, :w, :h
-  
+
   def initialize(x, y, width, height)
     @x = x
     @y = y
     @w = width
     @h = height
   end
-  
+
   def include_point? a, b
     (self.x..self.x + self.w).include? a  and (self.y..self.y + self.h).include? b
   end
-  
+
   def include_rectangle?(rect)
     return (self.include_point?(rect.x, rect.y) or
       self.include_point?(rect.x, rect.y + rect.h) or
       self.include_point?(rect.x + rect.w, rect.y) or
       self.include_point?(rect.x + rect.w, rect.y + rect.h))
   end
-  
+
 end

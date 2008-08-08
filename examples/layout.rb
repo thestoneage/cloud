@@ -8,9 +8,9 @@ include_class 'java.awt.geom.Rectangle2D'
 class LayoutChromosome < ListChromosome
 
   attr_reader :fitness
-  
+
   @@domain = nil
-  
+
   def initialize(genes = [])
     super(genes)
     if (not @@domain)
@@ -18,7 +18,7 @@ class LayoutChromosome < ListChromosome
       75.times { @@domain << [rand(10)+15, 10] }
     end
   end
-  
+
   def LayoutChromosome.domain
     return @@domain
   end
@@ -29,7 +29,7 @@ class LayoutChromosome < ListChromosome
     end
     return @genes
   end
-  
+
   def init_gene_at(index)
     element = @@domain[index]
     return Rectangle2D::Double.new(rand(320-element.first), rand(200-element.last), element.first, element.last)
