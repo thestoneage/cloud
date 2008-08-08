@@ -41,15 +41,16 @@ class Selector
     return next_gen
   end
 
-  def genetic_operators(candidate, partners)
+  def genetic_operators(candidate, partner)
     if (rand <= @crossover_probability)
-      candidate = candidate.crossover(partners[rand(partners.size)])
+      candidate = candidate.crossover(partner)
     end
     if (rand <= @mutation_probability)
       candidate = candidate.mutate(@mutator)
     end
     return candidate
   end
+
 end
 
 class RandomSelector < Selector
@@ -61,10 +62,15 @@ class RandomSelector < Selector
   def select_next_generation(population)
     next_gen = super(population)
     while next_gen.size < population.size
-      candidate = population[rand(population.size)]
-      next_gen << self.genetic_operators(candidate, population)
+      cand = self.select_candidate(population)
+      part = self.select_candidate(population)
+      next_gen << self.genetic_operators(cand, part)
     end
     return next_gen
+  end
+
+  def select_candidate(population)
+    return population[rand(population.size)]
   end
 
 end
@@ -85,12 +91,45 @@ class TruncationSelector < Selector
   def select_next_generation(population)
     next_gen = super(population)
     truncation_index = [1, (@truncation_percentage * population.size).round].max
-    candidates = population[0, truncation_index]
     while next_gen.size < population.size
-      candidate = candidates[rand(candidates.size)]
-      next_gen << self.genetic_operators(candidate, candidates)
+      cand = select_candidate(population, truncation_index)
+      part = select_candidate(population, truncation_index)
+      next_gen << self.genetic_operators(cand, part)
     end
     return next_gen
+  end
+
+  def select_candidate(population, truncation_index)
+    candidates = population[0, truncation_index]
+    return candidates[rand(candidates.size)]
+  end
+
+end
+
+class RouletteSelector < Selector
+
+  def initialize(args = {})
+    super(args)
+  end
+
+  def select_next_generation(population)
+    next_gen = super(population)
+    xfit = population.map { |x| 1.0/(x.fitness+1) }
+    sum = xfit.inject { |s, n| s+n }
+    psum = 0
+    probmap = xfit.map { |x| psum += x / sum.to_f }
+    while  next_gen.size < population.size
+      cand = select_candidate(probmap, population)
+      part = select_candidate(probmap, population)
+      next_gen << self.genetic_operators(cand, part)
+    end
+    return next_gen
+  end
+
+  def select_candidate(probmap, population)
+    random = rand
+    index = probmap.index(probmap.find { |x| x > random })
+    return population[index]
   end
 
 end

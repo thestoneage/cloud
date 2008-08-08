@@ -169,3 +169,21 @@ class TestTruncationSelector < Test::Unit::TestCase
   end
 
 end
+
+class TestRouletteSelector < Test::Unit::TestCase
+  def test_initilization
+    assert_nothing_raised(ArgumentError) { RouletteSelector.new }
+  end
+
+  def test_select_next_generation
+    selector = RouletteSelector.new()
+    chromosome = mock()
+    chromosome.stubs(:fitness).returns(1)
+    population = Array.new(5)
+    population.fill(chromosome)
+    next_gen = selector.select_next_generation(population)
+    assert_equal(Array, next_gen.class)
+    assert_equal(next_gen.size, population.size)
+  end
+
+end
