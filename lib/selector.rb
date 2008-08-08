@@ -133,3 +133,52 @@ class RouletteSelector < Selector
   end
 
 end
+
+class TournamentSelector < Selector
+  
+  def initialize(args={})
+    super(args)
+    if args[:tournament_percentage]
+       @tournament_percentage = args[:tournament_percentage]
+       raise(ArgumentError, "Tournament Percentage must be between 0 and 1") unless
+         (0 <= @tournament_percentage and @tournament_percentage <= 1)
+     else
+       @turnament_percentage = 1
+     end
+     if args[:tournament_selection_probability]
+       @tournament_selection_probability = args[:tournament_selection_probability]
+       raise(ArgumentError, "tournament_selection_probabiltiy must be between 0 and 1") unless
+         (0 <= @tournament_selection_probability and @tournament_selection_probability <= 1)
+     else
+       @tournament_selection_probability = 0.75
+     end
+  end
+
+  def select_next_generation(population)
+    next_gen = super(population)
+    size = [1, (population.size * @tournament_percentage).round].max
+    probmap = Array.new(size) { |i| @tournament_selection_probabiltiy * (1 - @tournament_selection_probabiltiy)**i }
+    sum = probmap.inject { |s, e| s+e }
+    probmap.map! { |e| e/sum.to_f }
+    psum = 0
+    probmap.map! { |x| psum += x }
+    while  next_gen.size < population.size
+      cand = select_candidate(population, probmap)
+      part = select_candidate(population, probmap)
+      next_gen << self.genetic_operators(cand, part)
+    end
+    return next_gen
+  end
+
+  def select_candidate(population, probmap)
+    tournament = []
+    while turnament.size < probmap.size
+      tournament << population[rand(probmap.size)]
+    end
+    tournament.sort!
+    random = rand
+    index = probmap.index(probmap.find { |x| x > random })
+    return population[index]
+  end
+
+end

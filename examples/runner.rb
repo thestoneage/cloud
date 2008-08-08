@@ -17,6 +17,7 @@ end
 #s = RandomSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probility => 0.1 })
 #s = TruncationSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
 s = RouletteSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :mutator => ProbabilityMutator.new(0.2) })
+#s = TournamentSelector.new({ :elite_size => 0, :crossover_probability => 0.95, :mutation_probability => 0.1, :mutator => ProbabilityMutator.new(0.2), :tournament_percentage => 0.5 })
 g = Genetic.new(15, 250, EigenLayoutChromosome, s)
 g.init_population
 p = g.optimize do |gen, pop| 

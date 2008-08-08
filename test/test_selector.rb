@@ -187,3 +187,37 @@ class TestRouletteSelector < Test::Unit::TestCase
   end
 
 end
+
+class TestTournamentSelector < Test::Unit::TestCase
+
+  def test_initilization
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new }
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_percentage => 0}) }
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_percentage => 1}) }
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_percentage => 0.5}) }
+    assert_raise(ArgumentError) { TournamentSelector.new({:tournament_percentage =>  2}) }
+    assert_raise(ArgumentError) { TournamentSelector.new({:tournament_percentage => -2}) }
+
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_selection_probability => 0}) }
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_selection_probability => 1}) }
+    assert_nothing_raised(ArgumentError) { TournamentSelector.new({:tournament_selection_probability => 0.5}) }
+    assert_raise(ArgumentError) { TournamentSelector.new({:tournament_selection_probability =>  2}) }
+    assert_raise(ArgumentError) { TournamentSelector.new({:tournament_selection_probability => -2}) }
+  end
+  
+  def test_select_next_generation
+    selector = RouletteSelector.new
+    chromosome = mock()
+    chromosome.stubs(:fitness).returns(1)
+    population = Array.new(5)
+    population.fill(chromosome)
+    next_gen = selector.select_next_generation(population)
+    assert_equal(Array, next_gen.class)
+    assert_equal(next_gen.size, population.size)
+  end
+
+  def select_candidate
+    
+  end
+
+end

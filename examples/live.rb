@@ -35,7 +35,7 @@ s = TruncationSelector.new({ :elite_size => 1, :crossover_probability => 0.99, :
 g = Genetic.new(12, 300, EigenLayoutChromosome, s)
 g.init_population
 p = g.optimize do |gen, pop| 
-  puts "(#{gen}) "
+  frame.setTitle("(#{gen}. Generation) - Live!")
   image = BufferedImage.new(320, 200, BufferedImage::TYPE_INT_RGB)
   graphics = image.createGraphics
   solution = pop.first
