@@ -40,8 +40,25 @@ class TextLayout < ListChromosome
 
   def init_gene_at(index)
     dom = @@domain[index]
-    x = rand(@@width-dom[:w])
-    y = rand(@@height-dom[:h])
+    if (@fitness and @fitness < 70000)
+      gene = @genes[index]
+      x = gene.x + (rand(10)-5)
+      y = gene.y + (rand(10)-5)
+    else
+      if @genes and @genes.size == @@domain.size
+        xes = @genes.map { |e| e.x }
+        max_x = xes.max
+        min_x = xes.min
+        yes = @genes.map { |e| e.y }
+        max_y = yes.max
+        min_y = yes.min
+        x = rand(max_x - min_x)+min_x
+        y = rand(max_y - min_y)+min_y
+      else 
+        x = rand(@@width-dom[:w])
+        y = rand(@@height-dom[:h])
+      end
+    end
     gene = Rectangle.new(x, y, dom[:w], dom[:h], dom[:str])
     return gene
   end
