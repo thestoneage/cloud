@@ -28,7 +28,7 @@ class Genetic
       @generation += 1
       yield(@generation, @population) if block_given?
       @population = @selector.select_next_generation(@population)
-      @population.each { |chromosome| chromosome.compute_fitness }
+#      @population.each { |chromosome| chromosome.compute_fitness }
       @population.sort!
     end 
     return @population

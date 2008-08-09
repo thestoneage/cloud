@@ -1,5 +1,5 @@
 require 'mutator'
-
+require 'pp'
 class Selector
 
   def initialize(args = {})
@@ -44,9 +44,11 @@ class Selector
   def genetic_operators(candidate, partner)
     if (rand <= @crossover_probability)
       candidate = candidate.crossover(partner)
+      candidate.compute_fitness
     end
     if (rand <= @mutation_probability)
       candidate = candidate.mutate(@mutator)
+      candidate.compute_fitness
     end
     return candidate
   end
