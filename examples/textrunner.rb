@@ -16,6 +16,7 @@ include_class 'javax.swing.JFrame'
 include_class 'javax.swing.JPanel'
 include_class 'java.awt.Dimension'
 include_class 'java.awt.geom.AffineTransform'
+include_class 'java.awt.font.TextLayout'
 
 class MyPanel < JPanel
   
@@ -47,7 +48,6 @@ g.optimize do |gen, pop|
     str << "#{chromosome.fitness}; "
   end
   puts str
-  
   frame.setTitle("(#{gen}. Generation) - Live!")
   image = BufferedImage.new(320, 320, BufferedImage::TYPE_INT_RGB)
   graphics = image.createGraphics
@@ -55,11 +55,15 @@ g.optimize do |gen, pop|
   at = AffineTransform.new
   solution.genes.each do |rect|
     graphics.setColor(rect.color)
-    shape = Rectangle2D::Double.new(rect.x, rect.y, rect.w, rect.h)
-    graphics.draw(shape)
+#    shape = Rectangle2D::Double.new(rect.x, rect.y, rect.w, rect.h)
+#    graphics.draw(shape)
     at = graphics.getTransform
     graphics.scale(rect.scale, rect.scale)
-    graphics.drawString(rect.str, rect.x*1.0/rect.scale, 1.0/rect.scale*(rect.y+rect.h))
+    font = graphics.getFont()
+    frc = graphics.getFontRenderContext()
+    layout = TextLayout.new(rect.str, font, frc);
+    bounds = layout.getBounds()
+    layout.draw(graphics, rect.x/rect.scale-bounds.getX.abs, rect.y/rect.scale-bounds.getY)
     graphics.setTransform(at)
   end
   panel.image = image
