@@ -93,24 +93,6 @@ class TestRandomSelector < Test::Unit::TestCase
     assert(next_gen.class == Array, "Return Type should be Array")
     assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
     assert(population == next_gen, "With a Crossover Probability of 0.0 the next Generation is the same as the Population")
-
-    selector = RandomSelector.new({:crossover_probability => 1})
-    ca = mock()
-    ca.expects(:crossover).times(3).with(ca).returns(:ca)
-    population = [ca, ca, ca]
-    next_gen = selector.select_next_generation(population)
-    assert(next_gen.class == Array, "Return Type should be Array")
-    assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
-    assert(next_gen == [:ca, :ca, :ca], "With Crossover Probability of 1.0 the next Generation will be only the stubs")
-
-    selector = RandomSelector.new({:mutation_probability => 1})
-    cb = mock()
-    cb.expects(:mutate).times(3).returns(:cb)
-    population = [cb, cb, cb]
-    next_gen = selector.select_next_generation(population)
-    assert(next_gen.class == Array, "Return Type should be Array")
-    assert(population.size == next_gen.size, "Population and Next Generation must have the same size")
-    assert(next_gen == [:cb, :cb, :cb], "With Mutation Probability of 1.0 the next Generation will be only the stubs")
   end
 
 end
