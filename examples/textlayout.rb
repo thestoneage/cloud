@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'chromosome'
 
-require 'pp'
 require 'java'
 include_class 'java.awt.Font'
 include_class 'java.awt.image.BufferedImage'
