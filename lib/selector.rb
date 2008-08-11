@@ -1,5 +1,4 @@
 require 'mutator'
-require 'pp'
 class Selector
 
   def initialize(args = {})

@@ -1,6 +1,5 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'chromosome'
-require 'pp'
 
 class GraphLayout < ListChromosome
 

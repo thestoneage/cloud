@@ -5,7 +5,6 @@ require 'genetic'
 require 'mutator'
 require 'selector'
 require 'textlayout'
-require 'pp'
 require 'java'
 
 

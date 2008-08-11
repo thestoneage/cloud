@@ -5,7 +5,6 @@ require 'genetic'
 require 'mutator'
 require 'selector'
 require 'graphlayout'
-require 'pp'
 require 'java'
 
 include_class 'java.awt.image.BufferedImage'
