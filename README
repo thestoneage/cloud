@@ -1,5 +1,15 @@
 Cloud is a genetic algorithm framework written entirely in ruby.
 
+Usage:
+Subclass Chromosome and ChromosomeFactory and implement the abstract methods. Choose a Selector, Mutator instantiate them and run the genetic algorithm.
+
+generations = 150
+popultion_size = 15
+factory = YourChromosomeFactory.new
+mutator = SingleMutator.new
+selector = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.8, :mutation_probability => 0.2, :mutator =>  mutator})
+genetic = Genetic.new(population_size, generations, factory, selector)
+
 examples/
 
 lib/
