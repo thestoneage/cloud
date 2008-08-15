@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift File.dirname(__FILE__)
+
 require 'genetic'
 require 'mutator'
 require 'selector'
@@ -31,10 +33,16 @@ panel.setPreferredSize(Dimension.new(320, 200))
 frame.add(panel)
 frame.pack
 frame.setVisible(true)
-s = TruncationSelector.new({ :elite_size => 1, :crossover_probability => 0.99, :mutation_probability => 0.2, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
-g = Genetic.new(12, 300, EigenLayoutChromosome, s)
-g.init_population
-p = g.optimize do |gen, pop| 
+selector = TruncationSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
+factory = EigenLayoutFactory.new
+genetic = Genetic.new(12, 300, factory, selector)
+genetic.init_population
+p = genetic.optimize do |gen, pop|
+  str = "(#{gen}) "
+  pop.each do |chromosome|
+    str << "#{chromosome.fitness}; "
+  end
+  puts str
   frame.setTitle("(#{gen}. Generation) - Live!")
   image = BufferedImage.new(320, 200, BufferedImage::TYPE_INT_RGB)
   graphics = image.createGraphics

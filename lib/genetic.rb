@@ -1,20 +1,20 @@
 class Genetic
   
-  attr_reader :population_size, :population, :max_generations, :generation, :chromosome_type, :selector
+  attr_reader :population_size, :population, :max_generations, :generation, :chromosome_factory, :selector
   attr_writer :selector, :population
   
-  def initialize(population_size, max_generations, chromosome_type, selector)
+  def initialize(population_size, max_generations, chromosome_factory, selector)
     @population_size = population_size
     @max_generations = max_generations
     @generation = 0
-    @chromosome_type = chromosome_type
+    @chromosome_factory = chromosome_factory
     @selector = selector
   end
 
   def init_population
     @population = []
     @population_size.times do
-      chromosome = chromosome_type.new
+      chromosome = chromosome_factory.get_chromosome
       chromosome.random_init
       chromosome.compute_fitness
       @population << chromosome

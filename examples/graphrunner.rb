@@ -58,16 +58,15 @@ g.optimize do |gen, pop|
   solution = pop.first
   solution.genes.each do |node|
     node.links.each do |index|
-     line = Line2D::Double.new(node.x+node.radius/2, node.y+node.radius/2, solution.genes[index].x+node.radius/2, solution.genes[index].y+node.radius/2)
+     line = Line2D::Double.new(node.point, solution.genes[index].point)
      graphics.draw(line)
     end
   end
   solution.genes.each do |node|
-   circle = Ellipse2D::Double.new(node.x, node.y, node.radius, node.radius)
    graphics.setColor(Color::black)
-   graphics.fill(circle)
+   graphics.fill(node.shape)
    graphics.setColor(Color::white)
-   graphics.draw(circle)
+   graphics.draw(node.shape)
   end
   panel.image = image
   panel.repaint

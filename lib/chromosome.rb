@@ -1,6 +1,7 @@
 class ListChromosome
 
   attr_reader :genes, :fitness
+  attr_writer :genes
 
   def initialize(genes=[])
     @genes = genes
@@ -20,7 +21,9 @@ class ListChromosome
         child_genes[index] = partner.genes[index]
       end
     end
-    return self.class.new(child_genes)
+    child = self.clone
+    child.genes = child_genes
+    return child
   end
 
   def size
@@ -28,10 +31,12 @@ class ListChromosome
   end
 
   def mutate(mutator)
-    new_genes = @genes.clone
+    mutated_genes = @genes.clone
     indices = mutator.mutate(self)
-    indices.each { |index| new_genes[index] = init_gene_at(index) }
-    return self.class.new(new_genes)
+    indices.each { |index| mutated_genes[index] = init_gene_at(index) }
+    mutation = self.clone
+    mutation.genes = mutated_genes
+    return mutation
   end
 
   def random_init

@@ -1,5 +1,17 @@
 Cloud is a genetic algorithm framework written entirely in ruby.
 
 examples/
+
 lib/
+chromosome.rb
+genetic.rb
+mutator.rb
+selector.rb
+
 test/
+cloud_test_helper.rb
+cloud_test_suite.rb
+test_chromosome.rb
+test_genetic.rb
+test_mutator.rb
+test_selector.rb

@@ -7,15 +7,15 @@ class TestGenetic < Test::Unit::TestCase
   def test_initialization
     population_size = 20
     generations = 10
-    genome_type = mock()
+    chromosome_factory = mock()
     selector = mock()
-    genetic = Genetic.new(population_size, generations, genome_type, selector)
+    genetic = Genetic.new(population_size, generations, chromosome_factory, selector)
 
     assert_equal(population_size, genetic.population_size)
     assert_equal(generations, genetic.max_generations)
     assert_equal(0, genetic.generation)
     assert_equal(selector, genetic.selector)
-    assert_equal(genome_type, genetic.chromosome_type)
+    assert_equal(chromosome_factory, genetic.chromosome_factory)
   end
 
   def test_case_init_population
@@ -23,9 +23,9 @@ class TestGenetic < Test::Unit::TestCase
     chromosome.expects(:random_init).times(10)
     chromosome.expects(:compute_fitness).times(10)
     chromosome.stubs(:<=>).returns(0)
-    chromosome_type = mock()
-    chromosome_type.expects(:new).times(10).returns(chromosome)
-    genetic = Genetic.new(10, 10, chromosome_type, mock())
+    chromosome_factory = mock()
+    chromosome_factory.expects(:get_chromosome).times(10).returns(chromosome)
+    genetic = Genetic.new(10, 10, chromosome_factory, mock())
 
     genetic.init_population
     assert_equal(10, genetic.population.size)

@@ -30,16 +30,19 @@ class MyPanel < JPanel
   end
 end
 
+width = 640
+height = 480
 frame = JFrame.new("Live!")
 panel = MyPanel.new
-panel.setPreferredSize(Dimension.new(320, 320))
+panel.setPreferredSize(Dimension.new(width, height))
 frame.setDefaultCloseOperation(JFrame::EXIT_ON_CLOSE);
 frame.add(panel)
 frame.pack
 frame.setVisible(true)
 #s = TruncationSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
-s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probability => 0.8, :mutator => SingleMutator.new })
-g = Genetic.new(10, 1500, TextLayoutChromosome, s)
+s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.8, :mutation_probability => 0.2, :mutator => SingleMutator.new })
+f = TagLayoutFactory.new(width, height)
+g = Genetic.new(10, 1500, f, s)
 g.init_population
 g.optimize do |gen, pop| 
   str = "(#{gen}) "
@@ -48,7 +51,7 @@ g.optimize do |gen, pop|
   end
   puts str
   frame.setTitle("(#{gen}. Generation) - Live!")
-  image = BufferedImage.new(320, 320, BufferedImage::TYPE_INT_RGB)
+  image = BufferedImage.new(width, height, BufferedImage::TYPE_INT_RGB)
   graphics = image.createGraphics
   solution = pop.first
   at = AffineTransform.new
