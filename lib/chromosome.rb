@@ -26,10 +26,6 @@ class ListChromosome
     return child
   end
 
-  def size
-    return @genes.size
-  end
-
   def mutate(mutator)
     mutated_genes = @genes.clone
     indices = mutator.mutate(self)

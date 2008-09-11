@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'genetic'
 require 'mutator'
 require 'selector'
-require 'graphlayout'
+require 'graph_layout'
 require 'java'
 
 include_class 'java.awt.image.BufferedImage'
@@ -31,9 +31,11 @@ class MyPanel < JPanel
   end
 end
 
+width = 320
+height = 200
 frame = JFrame.new("Live!")
 panel = MyPanel.new
-panel.setPreferredSize(Dimension.new(320, 320))
+panel.setPreferredSize(Dimension.new(width, height))
 frame.setDefaultCloseOperation(JFrame::EXIT_ON_CLOSE);
 frame.add(panel)
 frame.pack
@@ -41,8 +43,10 @@ frame.setVisible(true)
 rh =  RenderingHints.new(RenderingHints.new(RenderingHints::KEY_ANTIALIASING, RenderingHints::VALUE_ANTIALIAS_ON))
 rh.add(RenderingHints.new(RenderingHints::KEY_TEXT_ANTIALIASING, RenderingHints::VALUE_TEXT_ANTIALIAS_ON))
 
-s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probability => 0.8, :mutator => SingleMutator.new })
-g = Genetic.new(10, 1000, GraphLayout, s)
+s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.0, :mutation_probability => 0.0, :mutator => SingleMutator.new })
+f = GraphLayoutFactory.new(width, height)
+g = Genetic.new(4, 150, f, s)
+
 g.init_population
 g.optimize do |gen, pop| 
   str = "(#{gen}) "
@@ -51,14 +55,15 @@ g.optimize do |gen, pop|
   end
   puts str
   frame.setTitle("(#{gen}. Generation) - Live!")
-  image = BufferedImage.new(320, 320, BufferedImage::TYPE_INT_RGB)
+  image = BufferedImage.new(width, height, BufferedImage::TYPE_INT_RGB)
   graphics = image.createGraphics
   graphics.setRenderingHints(rh);
   graphics.setStroke(BasicStroke.new(2.5))
   solution = pop.first
   solution.genes.each do |node|
-    node.links.each do |index|
-     line = Line2D::Double.new(node.point, solution.genes[index].point)
+    node.domnode.each do |other|
+      if (node.domnode)
+     line = Line2D::Double.new(node.point, other.point)
      graphics.draw(line)
     end
   end
@@ -71,4 +76,4 @@ g.optimize do |gen, pop|
   panel.image = image
   panel.repaint
 end
-#frame.dispose
+frame.dispose

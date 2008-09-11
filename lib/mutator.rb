@@ -8,7 +8,7 @@ end
 class SingleMutator
   
   def mutate(chromosome)
-    indices = [ rand(chromosome.size) ]
+    indices = [ rand(chromosome.genes.size) ]
     return indices
   end
   
@@ -24,7 +24,7 @@ class ProbabilityMutator
 
   def mutate(chromosome)
     indices = []
-    size = chromosome.size
+    size = chromosome.genes.size
     size.times do |index|
       indices << index if (rand <= @probability)
     end
