@@ -24,7 +24,7 @@ class TagLayoutFactory < ChromosomeFactory
     d.each do |word|
       layout = TextLayout.new(word, font, frc)
       bounds = layout.getBounds()
-      scale = rand*2+0.5
+      scale = rand*0.8+0.5
       @domain << { :w => scale * bounds.getWidth, :h => scale * bounds.getHeight(), :str => word ,:scale  => scale}
     end
   end
@@ -57,7 +57,7 @@ class TagLayout < ListChromosome
 
   def init_gene_at(index)
     gene = @genes[index]
-    if (@fitness < (@factory.domain.size * @factory.width / 2.5))
+    if (@fitness < (@factory.domain.size * @factory.width / 3.5))
       if (rand(2)==0)
         x = gene.x + (rand(@factory.width/10)+5)
         y = gene.y

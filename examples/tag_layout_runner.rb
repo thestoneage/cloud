@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'genetic'
 require 'mutator'
 require 'selector'
-require 'textlayout'
+require 'tag_layout'
 require 'java'
 
 
@@ -30,8 +30,8 @@ class MyPanel < JPanel
   end
 end
 
-width = 640
-height = 480
+width = 320
+height = 200
 frame = JFrame.new("Live!")
 panel = MyPanel.new
 panel.setPreferredSize(Dimension.new(width, height))
@@ -40,9 +40,9 @@ frame.add(panel)
 frame.pack
 frame.setVisible(true)
 #s = TruncationSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
-s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.8, :mutation_probability => 0.2, :mutator => SingleMutator.new })
+s = RouletteSelector.new({ :elite_size => 2, :crossover_probability => 0.95, :mutation_probability => 0.2, :mutator => ProbabilityMutator.new(0.1) })
 f = TagLayoutFactory.new(width, height)
-g = Genetic.new(10, 1500, f, s)
+g = Genetic.new(12, 1500, f, s)
 g.init_population
 g.optimize do |gen, pop| 
   str = "(#{gen}) "
