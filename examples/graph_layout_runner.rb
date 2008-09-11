@@ -63,8 +63,9 @@ g.optimize do |gen, pop|
   solution.genes.each do |node|
     node.domnode.each do |other|
       if (node.domnode)
-     line = Line2D::Double.new(node.point, other.point)
-     graphics.draw(line)
+        line = Line2D::Double.new(node.point, other.point)
+        graphics.draw(line)
+      end
     end
   end
   solution.genes.each do |node|
@@ -76,4 +77,4 @@ g.optimize do |gen, pop|
   panel.image = image
   panel.repaint
 end
-frame.dispose
+
