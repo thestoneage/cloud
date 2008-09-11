@@ -2,7 +2,7 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'chromosome'
 require 'chromosome_factory'
 
-class EigenLayoutFactory < ChromosomeFactory
+class RectLayoutFactory < ChromosomeFactory
 
   attr_reader :domain, :width, :height
 
@@ -14,12 +14,12 @@ class EigenLayoutFactory < ChromosomeFactory
   end
   
   def get_chromosome
-    return EigenLayout.new(self)
+    return RectLayout.new(self)
   end
 
 end
 
-class EigenLayout < ListChromosome
+class RectLayout < ListChromosome
 
   def initialize(factory, genes = [])
     super(genes)

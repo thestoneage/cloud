@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'genetic'
 require 'mutator'
 require 'selector'
-require 'eigenlayout'
+require 'rect_layout'
 require 'pp'
 require 'java'
 
@@ -34,7 +34,7 @@ frame.add(panel)
 frame.pack
 frame.setVisible(true)
 selector = TruncationSelector.new({ :elite_size => 1, :crossover_probability => 0.5, :mutation_probability => 0.1, :truncation_percentage => 0.5, :mutator => ProbabilityMutator.new(0.2) })
-factory = EigenLayoutFactory.new
+factory = RectLayoutFactory.new
 genetic = Genetic.new(12, 300, factory, selector)
 genetic.init_population
 p = genetic.optimize do |gen, pop|
