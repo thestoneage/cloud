@@ -42,9 +42,9 @@ frame.setVisible(true)
 s = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.8, :mutation_probability => 0.1, :mutator => SingleMutator.new })
 items = []
 #items =  [ Item.new(20), Item.new(20), Item.new(50), Item.new(30) ] 
-10.times { items << Item.new(5 + rand(55))  }
+10.times { items << Item.new(22 + rand(30))  }
 f = KnappsackFactory.new(200, items )
-g = Genetic.new(10, 10, f, s)
+g = Genetic.new(3, 50, f, s)
 g.init_population
 
 gap = 15
@@ -115,7 +115,7 @@ g.optimize do |gen, pop|
   
   panel.image = image
   panel.repaint
-  sleep 0.1
+  sleep 0.25
 end
 g.population.reverse.each_with_index  do |chromosome, index|
   puts "Fitness #{chromosome.fitness}"

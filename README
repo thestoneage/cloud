@@ -11,17 +11,29 @@ selector = RouletteSelector.new({ :elite_size => 1, :crossover_probability => 0.
 genetic = Genetic.new(population_size, generations, factory, selector)
 
 examples/
+ graph_layout.rb
+ graph_layout_runner.rb
+ knappsack.rb
+ knappsack_runner.rb
+ layout.rb
+ layout_runner.rb
+ rect_layout.rb
+ rect_layout_runner.rb
+ tag_layout.rb
+ tag_layout_runner.rb
+ 
 
 lib/
-chromosome.rb
-genetic.rb
-mutator.rb
-selector.rb
-
+ chromosome.rb
+ genetic.rb
+ mutator.rb
+ selector.rb
+ 
 test/
-cloud_test_helper.rb
-cloud_test_suite.rb
-test_chromosome.rb
-test_genetic.rb
-test_mutator.rb
-test_selector.rb
+ cloud_test_helper.rb
+ cloud_test_suite.rb
+ test_chromosome.rb
+ test_genetic.rb
+ test_mutator.rb
+ test_selector.rb
+ 

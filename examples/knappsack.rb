@@ -29,11 +29,13 @@ class Knappsack < ListChromosome
   end
 
   def random_init
-    factory.items.each do |item|
-      if (rand(2)==0 and item.size <= self.space)
-        @genes << true
+    @genes = Array.new(@factory.items.size) { false }
+    indices = Array.new(@factory.items.size) { |i| i }.sort_by { rand }
+    indices.each do |index|
+      if (@factory.items[index].size <= self.space)
+        @genes[index] = true
       else
-        @genes << false
+        @genes[index] = false
       end
     end
   end

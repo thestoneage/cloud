@@ -62,8 +62,4 @@ class TestListChromosome < Test::Unit::TestCase
     assert_equal(chromos1.genes, chromos2.genes, "Since we mock the mutator both Chromosomes must be equal.")
   end
 
-  def test_size
-    assert_equal(0, @empty_chromosome.size, "Size of an empty Chromosome should be 0.")
-  end
-
 end
